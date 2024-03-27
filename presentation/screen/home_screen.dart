@@ -18,7 +18,8 @@ class HomeScreen extends StatelessWidget {
           title: const Text('FoodExpress'),
         ),
         
-        drawer: _drawer(context),
+        drawer: Drawer(child: _drawer(context))
+        
 
 // Corpo
         body: Container(),
