@@ -9,9 +9,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
-    return Theme(
-      data: ThemeData.light(),
-      child: Scaffold(
+      return Scaffold(
 
 // Titulo
         appBar: AppBar(
@@ -24,7 +22,6 @@ class HomeScreen extends StatelessWidget {
 // Corpo
         body: Container(),
 
-      ),
     );
 
   }
