@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_food_express/data/config.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseProvider{
 
@@ -8,23 +11,29 @@ class DatabaseProvider{
   // late precisa de um comando para criar a instancia
   late Database _database;
 
-}
-/// Abrir conexão com o banco
 
-// Método assimcromo
-void open() async {
+  /// Abrir conexão com o banco
+  /// 
+  // Método assimcromo
+  Future<void> open() async {
+    sqfliteFfiInit();
 
-/// passando o caminho do banco de dados
-// Por ser um parametro que retorna algo posteriormente precisa colocar a palavra await
-  String path = join(await getDatabasesPath(),"foodexpress.db");
-  _database = await openDatabase(
-    path,
-    version: 1,
-    onCreate: (db, version) => _create 
-  );
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS){
+      databaseFactory = databaseFactoryFfi;
+    }
+    
+  /// passando o caminho do banco de dados
+  // Por ser um parametro que retorna algo posteriormente precisa colocar a palavra await
+    String path = join(await getDatabasesPath(),"foodexpress.db");
+    _database = await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) => _create(db,version) 
+    );
 
-}
+  }
 
-void _create(Database db, int version){
-  db.execute(Config.sql);
+  Future<void> _create(Database db, int version) async{
+    db.execute(Config.sql);
+  }
 }
